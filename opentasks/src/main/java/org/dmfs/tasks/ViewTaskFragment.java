@@ -52,10 +52,13 @@ import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.widget.TextView;
 
+import org.dmfs.android.contentpal.RowDataSnapshot;
 import org.dmfs.android.retentionmagic.SupportFragment;
 import org.dmfs.android.retentionmagic.annotations.Parameter;
 import org.dmfs.android.retentionmagic.annotations.Retain;
+import org.dmfs.tasks.contract.TaskContract;
 import org.dmfs.tasks.contract.TaskContract.Tasks;
+import org.dmfs.tasks.data.SubtasksSource;
 import org.dmfs.tasks.model.ContentSet;
 import org.dmfs.tasks.model.Model;
 import org.dmfs.tasks.model.OnContentChangeListener;
@@ -65,11 +68,15 @@ import org.dmfs.tasks.notification.TaskNotificationHandler;
 import org.dmfs.tasks.share.ShareIntentFactory;
 import org.dmfs.tasks.utils.ContentValueMapper;
 import org.dmfs.tasks.utils.OnModelLoadedListener;
+import org.dmfs.tasks.widget.SubtasksView;
 import org.dmfs.tasks.widget.TaskView;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 
 
 /**
@@ -130,6 +137,8 @@ public class ViewTaskFragment extends SupportFragment
      * The actual detail view. We store this direct reference to be able to clear it when the fragment gets detached.
      */
     private TaskView mDetailView;
+
+    private Disposable mDisposable;
 
     private int mListColor;
     private int mOldStatus = -1;
@@ -208,14 +217,6 @@ public class ViewTaskFragment extends SupportFragment
     }
 
 
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the fragment (e.g. upon screen orientation changes).
-     */
-    public ViewTaskFragment()
-    {
-    }
-
-
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
@@ -266,6 +267,7 @@ public class ViewTaskFragment extends SupportFragment
             mDetailView.setValues(null);
         }
 
+        mDisposable.dispose();
     }
 
 
@@ -400,8 +402,8 @@ public class ViewTaskFragment extends SupportFragment
 
         if ((oldUri == null) != (uri == null))
         {
-			/*
-			 * getActivity().invalidateOptionsMenu() doesn't work in Android 2.x so use the compat lib
+            /*
+             * getActivity().invalidateOptionsMenu() doesn't work in Android 2.x so use the compat lib
 			 */
             ActivityCompat.invalidateOptionsMenu(getActivity());
         }
@@ -491,8 +493,8 @@ public class ViewTaskFragment extends SupportFragment
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
     {
-		/*
-		 * Don't show any options if we don't have a task to show.
+        /*
+         * Don't show any options if we don't have a task to show.
 		 */
         if (mTaskUri != null)
         {
@@ -717,6 +719,16 @@ public class ViewTaskFragment extends SupportFragment
                 postUpdateView();
             }
         }
+
+        mDisposable = new SubtasksSource(mAppContext, mTaskUri, Tasks._ID, Tasks.TITLE)
+                .subscribe(new Consumer<Iterable<RowDataSnapshot<TaskContract.Tasks>>>()
+                {
+                    @Override
+                    public void accept(Iterable<RowDataSnapshot<TaskContract.Tasks>> subTasks)
+                    {
+                        new SubtasksView(mContent).update(subTasks);
+                    }
+                });
     }
 
 

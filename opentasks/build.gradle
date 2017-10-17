@@ -51,6 +51,7 @@ dependencies {
         exclude group: 'xmlpull', module: 'xmlpull'
     }
     compile project(':opentasks-provider')
+    compile project(':opentaskspal')
     compile 'com.google.android.apps.dashclock:dashclock-api:2.0.0'
     compile 'com.github.dmfs:color-picker:1.0'
     compile 'au.com.codeka:carrot:2.4.0'
@@ -59,6 +60,8 @@ dependencies {
         exclude group: 'com.android.support'
     }
     compile 'org.dmfs:essentials:1.9'
+    compile 'io.reactivex.rxjava2:rxjava:2.1.5'
+    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
 
     testCompile 'junit:junit:4.12'
 }

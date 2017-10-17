@@ -14,25 +14,23 @@
  * limitations under the License.
  */
 
-package org.dmfs.opentaskspal.views;
+package org.dmfs.tasks.widget;
 
-import android.content.ContentProviderClient;
-
-import org.dmfs.android.contentpal.View;
-import org.dmfs.android.contentpal.views.BaseView;
-import org.dmfs.android.contentpal.views.DelegatingView;
-import org.dmfs.tasks.contract.TaskContract;
+import android.view.View;
 
 
 /**
- * {@link View} for the {@link TaskContract.Tasks} table.
+ * Interface that can be implemented by any {@link View} that is 'smart', i.e. that takes care of how to update itself
+ * from data/model and may also initiate actions, when clicked for example, instead of calling back.
  *
  * @author Gabor Keszthelyi
  */
-public final class TasksView extends DelegatingView<TaskContract.Tasks>
+public interface SmartView<D>
 {
-    public TasksView(String authority, ContentProviderClient client, String... projection)
-    {
-        super(new BaseView<TaskContract.Tasks>(client, TaskContract.Tasks.getContentUri(authority)));
-    }
+
+    /**
+     * Called to update the View's content with the provided data.
+     */
+    void update(D data);
+
 }

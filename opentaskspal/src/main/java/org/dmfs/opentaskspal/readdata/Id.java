@@ -14,25 +14,38 @@
  * limitations under the License.
  */
 
-package org.dmfs.opentaskspal.views;
+package org.dmfs.opentaskspal.readdata;
 
-import android.content.ContentProviderClient;
+import android.provider.BaseColumns;
 
-import org.dmfs.android.contentpal.View;
-import org.dmfs.android.contentpal.views.BaseView;
-import org.dmfs.android.contentpal.views.DelegatingView;
-import org.dmfs.tasks.contract.TaskContract;
+import org.dmfs.android.contentpal.RowDataSnapshot;
+import org.dmfs.android.contentpal.RowSnapshot;
+import org.dmfs.jems.single.Single;
 
 
 /**
- * {@link View} for the {@link TaskContract.Tasks} table.
- *
  * @author Gabor Keszthelyi
  */
-public final class TasksView extends DelegatingView<TaskContract.Tasks>
+public final class Id implements Single<Long>
 {
-    public TasksView(String authority, ContentProviderClient client, String... projection)
+    private final RowDataSnapshot<?> mRowDataSnapshot;
+
+
+    public Id(RowDataSnapshot<?> rowDataSnapshot)
     {
-        super(new BaseView<TaskContract.Tasks>(client, TaskContract.Tasks.getContentUri(authority)));
+        mRowDataSnapshot = rowDataSnapshot;
+    }
+
+
+    public Id(RowSnapshot<?> rowSnapshot)
+    {
+        this(rowSnapshot.values());
+    }
+
+
+    @Override
+    public Long value()
+    {
+        return Long.valueOf(mRowDataSnapshot.charData(BaseColumns._ID).value().toString());
     }
 }

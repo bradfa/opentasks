@@ -14,25 +14,20 @@
  * limitations under the License.
  */
 
-package org.dmfs.opentaskspal.views;
+package org.dmfs.tasks.data;
 
 import android.content.ContentProviderClient;
+import android.content.Context;
 
-import org.dmfs.android.contentpal.View;
-import org.dmfs.android.contentpal.views.BaseView;
-import org.dmfs.android.contentpal.views.DelegatingView;
-import org.dmfs.tasks.contract.TaskContract;
+import org.dmfs.android.contentpal.RowSet;
 
 
 /**
- * {@link View} for the {@link TaskContract.Tasks} table.
- *
  * @author Gabor Keszthelyi
  */
-public final class TasksView extends DelegatingView<TaskContract.Tasks>
+public interface CpQuery<T>
 {
-    public TasksView(String authority, ContentProviderClient client, String... projection)
-    {
-        super(new BaseView<TaskContract.Tasks>(client, TaskContract.Tasks.getContentUri(authority)));
-    }
+
+    RowSet<T> query(ContentProviderClient client, Context appContext);
+
 }

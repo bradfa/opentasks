@@ -14,25 +14,35 @@
  * limitations under the License.
  */
 
-package org.dmfs.opentaskspal.views;
+package org.dmfs.tasks.data;
 
-import android.content.ContentProviderClient;
-
-import org.dmfs.android.contentpal.View;
-import org.dmfs.android.contentpal.views.BaseView;
-import org.dmfs.android.contentpal.views.DelegatingView;
-import org.dmfs.tasks.contract.TaskContract;
+import io.reactivex.disposables.Disposable;
 
 
 /**
- * {@link View} for the {@link TaskContract.Tasks} table.
- *
  * @author Gabor Keszthelyi
  */
-public final class TasksView extends DelegatingView<TaskContract.Tasks>
+public abstract class DelegatingDisposable implements Disposable
 {
-    public TasksView(String authority, ContentProviderClient client, String... projection)
+    private final Disposable mDelegate;
+
+
+    protected DelegatingDisposable(Disposable delegate)
     {
-        super(new BaseView<TaskContract.Tasks>(client, TaskContract.Tasks.getContentUri(authority)));
+        mDelegate = delegate;
+    }
+
+
+    @Override
+    public final void dispose()
+    {
+        mDelegate.dispose();
+    }
+
+
+    @Override
+    public final boolean isDisposed()
+    {
+        return mDelegate.isDisposed();
     }
 }
