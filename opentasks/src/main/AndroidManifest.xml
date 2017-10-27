@@ -16,7 +16,8 @@
             android:label="@string/app_name"
             android:name=".TasksApplication"
             android:taskAffinity="org.dmfs.tasks.TaskListActivity"
-            android:theme="@style/OpenTasksAppTheme">
+            android:theme="@style/OpenTasksAppTheme"
+            android:supportsRtl="false">
 
         <!-- TaskListActivity listens for MAIN intents -->
         <activity
