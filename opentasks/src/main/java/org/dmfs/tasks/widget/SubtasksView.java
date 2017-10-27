@@ -18,21 +18,23 @@ package org.dmfs.tasks.widget;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.graphics.drawable.DrawableCompat;
+import android.databinding.DataBindingUtil;
+import android.text.format.Time;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import org.dmfs.android.contentpal.RowDataSnapshot;
+import org.dmfs.opentaskspal.readdata.DueTime;
 import org.dmfs.opentaskspal.readdata.TaskTitle;
+import org.dmfs.optional.Optional;
+import org.dmfs.rfc5545.DateTime;
 import org.dmfs.tasks.R;
 import org.dmfs.tasks.contract.TaskContract;
 import org.dmfs.tasks.contract.TaskContract.Tasks;
+import org.dmfs.tasks.databinding.OtViewTaskDetailSubtaskBinding;
+import org.dmfs.tasks.utils.DateFormatter;
+import org.dmfs.tasks.utils.DateFormatter.DateFormatContext;
 import org.dmfs.tasks.utils.TaskUri;
 
 
@@ -61,36 +63,35 @@ public final class SubtasksView implements SmartView<Iterable<RowDataSnapshot<Ta
 
         LayoutInflater inflater = LayoutInflater.from(mHolder.getContext());
 
-        boolean first = true;
-        for (final RowDataSnapshot<Tasks> rowDataSnapshot : subtasks)
+        for (final RowDataSnapshot<Tasks> subtask : subtasks)
         {
-            TextView itemView = (TextView) inflater.inflate(R.layout.view_task_detail_subtask, null, false);
-            itemView.setText(new TaskTitle(rowDataSnapshot).value());
-
-            if (first)
-            {
-                itemView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_detail_list, 0, 0, 0);
-                first = false;
-            }
-            else
-            {
-                Drawable originalDrawable = ContextCompat.getDrawable(mHolder.getContext(), R.drawable.ic_detail_list);
-                Drawable wrappedDrawable = DrawableCompat.wrap(originalDrawable).mutate();
-                DrawableCompat.setTintList(wrappedDrawable, ColorStateList.valueOf(Color.TRANSPARENT));
-                itemView.setCompoundDrawablesWithIntrinsicBounds(wrappedDrawable, null, null, null);
-            }
-
-            itemView.setOnClickListener(new View.OnClickListener()
+            OtViewTaskDetailSubtaskBinding views = DataBindingUtil.inflate(inflater, R.layout.ot_view_task_detail_subtask, null, false);
+            views.otTaskTitle.setText(new TaskTitle(subtask).value());
+            views.getRoot().setOnClickListener(new View.OnClickListener()
             {
                 @Override
                 public void onClick(View v)
                 {
                     Context context = v.getContext();
-                    context.startActivity(new Intent("android.intent.action.VIEW", new TaskUri(context, rowDataSnapshot).value()));
+                    context.startActivity(new Intent("android.intent.action.VIEW", new TaskUri(context, subtask).value()));
                 }
             });
 
-            mHolder.addView(itemView);
+            Optional<DateTime> due = new DueTime(subtask).value();
+            if (due.isPresent())
+            {
+                // TODO Review this (depends on whether we use Time or DateTime):
+                Time dueTime = new Time();
+                dueTime.set(due.value().getTimestamp());
+
+                Time now = new Time();
+                now.setToNow();
+
+                views.otTaskDueDate.setText(new DateFormatter(mHolder.getContext()).format(dueTime, now, DateFormatContext.LIST_VIEW));
+
+            }
+
+            mHolder.addView(views.getRoot());
         }
         mHolder.requestLayout();
     }
