@@ -17,18 +17,27 @@
 package org.dmfs.opentaskspal.readdata;
 
 import org.dmfs.android.contentpal.RowDataSnapshot;
+import org.dmfs.iterators.Function;
 import org.dmfs.optional.decorators.DelegatingOptional;
+import org.dmfs.optional.decorators.Mapped;
 import org.dmfs.tasks.contract.TaskContract.Tasks;
 
 
 /**
  * @author Gabor Keszthelyi
  */
-public final class TaskTitle extends DelegatingOptional<CharSequence>
+public final class PercentComplete extends DelegatingOptional<Integer>
 {
-    public TaskTitle(RowDataSnapshot<Tasks> rowDataSnapshot)
+    public PercentComplete(RowDataSnapshot<Tasks> task)
     {
-        // TODO Make it lazy? Can we have a base class for that to avoid using Single and .value()?
-        super(rowDataSnapshot.charData(Tasks.TITLE));
+        super(new Mapped<>(new Function<CharSequence, Integer>()
+        {
+            @Override
+            public Integer apply(CharSequence charSequence)
+            {
+                // TODO Extract these kind of functions?
+                return Integer.valueOf(charSequence.toString());
+            }
+        }, task.charData(Tasks.PERCENT_COMPLETE)));
     }
 }

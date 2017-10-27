@@ -26,6 +26,7 @@ import android.view.ViewGroup;
 
 import org.dmfs.android.contentpal.RowDataSnapshot;
 import org.dmfs.opentaskspal.readdata.DueTime;
+import org.dmfs.opentaskspal.readdata.PercentComplete;
 import org.dmfs.opentaskspal.readdata.TaskTitle;
 import org.dmfs.optional.Optional;
 import org.dmfs.rfc5545.DateTime;
@@ -61,12 +62,15 @@ public final class SubtasksView implements SmartView<Iterable<RowDataSnapshot<Ta
             return;
         }
 
-        LayoutInflater inflater = LayoutInflater.from(mHolder.getContext());
+        Context context = mHolder.getContext();
+        LayoutInflater inflater = LayoutInflater.from(context);
 
         for (final RowDataSnapshot<Tasks> subtask : subtasks)
         {
             OtViewTaskDetailSubtaskBinding views = DataBindingUtil.inflate(inflater, R.layout.ot_view_task_detail_subtask, null, false);
-            views.otTaskTitle.setText(new TaskTitle(subtask).value());
+
+            views.otTaskTitle.setText(new TaskTitle(subtask).value(context.getString(R.string.ot_task_details_subtask_untitled)));
+
             views.getRoot().setOnClickListener(new View.OnClickListener()
             {
                 @Override
@@ -87,9 +91,11 @@ public final class SubtasksView implements SmartView<Iterable<RowDataSnapshot<Ta
                 Time now = new Time();
                 now.setToNow();
 
-                views.otTaskDueDate.setText(new DateFormatter(mHolder.getContext()).format(dueTime, now, DateFormatContext.LIST_VIEW));
+                views.otTaskDueDate.setText(new DateFormatter(context).format(dueTime, now, DateFormatContext.LIST_VIEW));
 
             }
+
+            new ProgressBackgroundView(views.otPercentageBackground).update(new PercentComplete(subtask));
 
             mHolder.addView(views.getRoot());
         }
