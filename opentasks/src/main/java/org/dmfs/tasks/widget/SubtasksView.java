@@ -19,7 +19,6 @@ package org.dmfs.tasks.widget;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.text.format.Time;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +32,8 @@ import org.dmfs.rfc5545.DateTime;
 import org.dmfs.tasks.R;
 import org.dmfs.tasks.contract.TaskContract;
 import org.dmfs.tasks.contract.TaskContract.Tasks;
+import org.dmfs.tasks.data.AndroidTime;
+import org.dmfs.tasks.data.AndroidTimeNow;
 import org.dmfs.tasks.databinding.OtViewTaskDetailSubtaskBinding;
 import org.dmfs.tasks.utils.DateFormatter;
 import org.dmfs.tasks.utils.DateFormatter.DateFormatContext;
@@ -84,15 +85,11 @@ public final class SubtasksView implements SmartView<Iterable<RowDataSnapshot<Ta
             Optional<DateTime> due = new DueTime(subtask).value();
             if (due.isPresent())
             {
-                // TODO Review this (depends on whether we use Time or DateTime):
-                Time dueTime = new Time();
-                dueTime.set(due.value().getTimestamp());
-
-                Time now = new Time();
-                now.setToNow();
-
-                views.otTaskDueDate.setText(new DateFormatter(context).format(dueTime, now, DateFormatContext.LIST_VIEW));
-
+                String formattedDue = new DateFormatter(context).format(
+                        new AndroidTime(due.value()).value(),
+                        new AndroidTimeNow().value(),
+                        DateFormatContext.LIST_VIEW);
+                views.otTaskDueDate.setText(formattedDue);
             }
 
             new ProgressBackgroundView(views.otPercentageBackground).update(new PercentComplete(subtask));
