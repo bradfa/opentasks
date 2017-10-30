@@ -25,6 +25,9 @@ import io.reactivex.schedulers.Schedulers;
 
 
 /**
+ * {@link SingleSource} decorator/adapter that sets the threading so that the work is on {@link Schedulers#io()}
+ * and delivery is on UI thread.
+ *
  * @author Gabor Keszthelyi
  */
 // TODO Okay to use rx.Single and rx.SingleSource 'interchangeably' while decorating, delegating?

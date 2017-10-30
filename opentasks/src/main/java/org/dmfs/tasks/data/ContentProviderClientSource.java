@@ -32,6 +32,9 @@ import io.reactivex.annotations.NonNull;
 
 
 /**
+ * {@link SingleSource} for accessing a {@link ContentProviderClient} for the given {@link Uri}.
+ * Takes care of closing the client upon disposal.
+ *
  * @author Gabor Keszthelyi
  */
 public class ContentProviderClientSource implements SingleSource<ContentProviderClient>

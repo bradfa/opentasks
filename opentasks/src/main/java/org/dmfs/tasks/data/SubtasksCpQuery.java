@@ -28,6 +28,8 @@ import static org.dmfs.provider.tasks.AuthorityUtil.taskAuthority;
 
 
 /**
+ * {@link CpQuery} for getting the subtasks of the given parent task.
+ *
  * @author Gabor Keszthelyi
  */
 public final class SubtasksCpQuery implements CpQuery<TaskContract.Tasks>
@@ -44,7 +46,7 @@ public final class SubtasksCpQuery implements CpQuery<TaskContract.Tasks>
 
 
     @Override
-    public RowSet<TaskContract.Tasks> query(ContentProviderClient client, Context appContext)
+    public RowSet<TaskContract.Tasks> rowSet(ContentProviderClient client, Context appContext)
     {
         return new Subtasks(taskAuthority(appContext), client, mTaskUri, mProjection);
     }

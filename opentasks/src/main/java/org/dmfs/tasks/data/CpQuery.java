@@ -23,11 +23,16 @@ import org.dmfs.android.contentpal.RowSet;
 
 
 /**
+ * Represents a ContentProvider query resulting in ContentPal's {@link RowSet}.
+ *
  * @author Gabor Keszthelyi
  */
 public interface CpQuery<T>
 {
 
-    RowSet<T> query(ContentProviderClient client, Context appContext);
+    /**
+     * Returns the {@link RowSet} that represent the result of this query.
+     */
+    RowSet<T> rowSet(ContentProviderClient client, Context appContext);
 
 }

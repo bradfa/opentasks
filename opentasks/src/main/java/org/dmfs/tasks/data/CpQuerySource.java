@@ -33,6 +33,9 @@ import io.reactivex.functions.Function;
 
 
 /**
+ * {@link SingleSource} that accesses the Tasks provider, runs the given {@link CpQuery}
+ * and delivers the the result {@link Iterable} of {@link RowDataSnapshot}s.
+ *
  * @author Gabor Keszthelyi
  */
 public final class CpQuerySource<T> implements SingleSource<Iterable<RowDataSnapshot<T>>>
@@ -57,15 +60,15 @@ public final class CpQuerySource<T> implements SingleSource<Iterable<RowDataSnap
                     @Override
                     public Iterable<RowDataSnapshot<T>> apply(@NonNull ContentProviderClient client) throws Exception
                     {
-                        RowSet<T> frozen = new Cached<>(mCpQuery.query(client, mAppContext));
+                        RowSet<T> frozen = new Cached<>(mCpQuery.rowSet(client, mAppContext));
                         frozen.iterator(); // To actually freeze it
 
                         return new Mapped<>(frozen, new org.dmfs.iterators.Function<RowSnapshot<T>, RowDataSnapshot<T>>()
                         {
                             @Override
-                            public RowDataSnapshot<T> apply(RowSnapshot<T> argument)
+                            public RowDataSnapshot<T> apply(RowSnapshot<T> rowSnapshot)
                             {
-                                return argument.values();
+                                return rowSnapshot.values();
                             }
                         });
                     }

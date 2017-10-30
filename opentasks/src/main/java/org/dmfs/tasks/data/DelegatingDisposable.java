@@ -20,6 +20,8 @@ import io.reactivex.disposables.Disposable;
 
 
 /**
+ * {@link Disposable} that simply delegates to the given {@link Disposable}.
+ *
  * @author Gabor Keszthelyi
  */
 public abstract class DelegatingDisposable implements Disposable

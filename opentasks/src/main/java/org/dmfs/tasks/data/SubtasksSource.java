@@ -29,6 +29,8 @@ import io.reactivex.SingleObserver;
 
 
 /**
+ * {@link Single} for getting the given tasks's subtasks as {@link RowDataSnapshot}s.
+ *
  * @author Gabor Keszthelyi
  */
 public final class SubtasksSource extends Single<Iterable<RowDataSnapshot<TaskContract.Tasks>>>
