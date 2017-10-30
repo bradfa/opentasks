@@ -14,22 +14,35 @@
  * limitations under the License.
  */
 
-package org.dmfs.tasks.widget;
+package org.dmfs.tasks.utils;
 
-import org.dmfs.android.contentpal.RowDataSnapshot;
-import org.dmfs.tasks.R;
-import org.dmfs.tasks.contract.TaskContract;
+import android.graphics.Color;
+
+import org.dmfs.jems.single.Single;
 
 
 /**
- * {@link ListItem} for {@link SubtaskView}.
+ * {@link Single} to get a darkened version of color, typically to use as status bar color.
  *
  * @author Gabor Keszthelyi
  */
-public final class SubtaskListItem extends DelegatingListItem<SubtaskView>
+public final class DarkenedColor implements Single<Integer>
 {
-    public SubtaskListItem(RowDataSnapshot<TaskContract.Tasks> subtaskData)
+    private final int mOriginalColor;
+
+
+    public DarkenedColor(int originalColor)
     {
-        super(new SmartListItem<SubtaskView, RowDataSnapshot<TaskContract.Tasks>>(R.layout.opentasks_view_item_task_details_subtask, subtaskData));
+        mOriginalColor = originalColor;
+    }
+
+
+    @Override
+    public Integer value()
+    {
+        float[] hsv = new float[3];
+        Color.colorToHSV(mOriginalColor, hsv);
+        hsv[2] = hsv[2] * 0.75f;
+        return Color.HSVToColor(hsv);
     }
 }

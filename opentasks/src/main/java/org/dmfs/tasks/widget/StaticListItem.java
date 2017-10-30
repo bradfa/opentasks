@@ -16,20 +16,36 @@
 
 package org.dmfs.tasks.widget;
 
-import org.dmfs.android.contentpal.RowDataSnapshot;
-import org.dmfs.tasks.R;
-import org.dmfs.tasks.contract.TaskContract;
+import android.support.annotation.LayoutRes;
+import android.view.View;
 
 
 /**
- * {@link ListItem} for {@link SubtaskView}.
+ * {@link ListItem} that simply points to a layout with static content.
  *
  * @author Gabor Keszthelyi
  */
-public final class SubtaskListItem extends DelegatingListItem<SubtaskView>
+public final class StaticListItem implements ListItem<View>
 {
-    public SubtaskListItem(RowDataSnapshot<TaskContract.Tasks> subtaskData)
+    private final int mLayout;
+
+
+    public StaticListItem(@LayoutRes int layout)
     {
-        super(new SmartListItem<SubtaskView, RowDataSnapshot<TaskContract.Tasks>>(R.layout.opentasks_view_item_task_details_subtask, subtaskData));
+        mLayout = layout;
+    }
+
+
+    @Override
+    public int layout()
+    {
+        return mLayout;
+    }
+
+
+    @Override
+    public void bindDataTo(View view)
+    {
+
     }
 }

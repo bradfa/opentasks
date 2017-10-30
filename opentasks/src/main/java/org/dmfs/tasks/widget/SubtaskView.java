@@ -35,7 +35,7 @@ import org.dmfs.tasks.R;
 import org.dmfs.tasks.contract.TaskContract;
 import org.dmfs.tasks.data.AndroidTime;
 import org.dmfs.tasks.data.AndroidTimeNow;
-import org.dmfs.tasks.databinding.OpentasksViewItemTaskDetailSubtaskBinding;
+import org.dmfs.tasks.databinding.OpentasksViewItemTaskDetailsSubtaskBinding;
 import org.dmfs.tasks.utils.DateFormatter;
 import org.dmfs.tasks.utils.TaskUri;
 
@@ -56,7 +56,7 @@ public final class SubtaskView extends FrameLayout implements SmartView<RowDataS
     @Override
     public void update(final RowDataSnapshot<TaskContract.Tasks> subtaskData)
     {
-        OpentasksViewItemTaskDetailSubtaskBinding views = DataBindingUtil.bind(this);
+        OpentasksViewItemTaskDetailsSubtaskBinding views = DataBindingUtil.bind(this);
 
         CharSequence title = new TaskTitle(subtaskData).value(getContext().getString(R.string.opentasks_task_details_subtask_untitled));
         views.opentasksTaskDetailsSubtaskTitle.setText(title);

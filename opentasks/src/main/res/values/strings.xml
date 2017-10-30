@@ -45,6 +45,8 @@
     <string name="opentasks_task_details_menu_send">Send to</string>
     <!-- The title displayed for a subtask that has no title -->
     <string name="opentasks_task_details_subtask_untitled">Untitled</string>
+    <!-- The header title of the subtasks section on the task details screen -->
+    <string name="opentasks_task_details_subtasks_section_title">Subtasks</string>
 
     <!-- The title of the button to add a new item to a check list. -->
     <string name="opentasks_checklist_add_item">Add item</string>
