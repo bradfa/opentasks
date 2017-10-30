@@ -60,6 +60,7 @@ import org.dmfs.tasks.model.Model;
 import org.dmfs.tasks.model.OnContentChangeListener;
 import org.dmfs.tasks.model.Sources;
 import org.dmfs.tasks.model.TaskFieldAdapters;
+import org.dmfs.tasks.utils.BasicTaskDetailsUi;
 import org.dmfs.tasks.utils.ContentValueMapper;
 import org.dmfs.tasks.utils.OnModelLoadedListener;
 import org.dmfs.tasks.utils.RecentlyUsedLists;
@@ -809,7 +810,7 @@ public class EditTaskFragment extends SupportFragment implements LoaderManager.L
                 activity.finish();
                 if (isNewTask)
                 {
-                    activity.startActivity(new Intent("android.intent.action.VIEW", mTaskUri));
+                    new BasicTaskDetailsUi(mTaskUri).show(activity);
                 }
             }
             else

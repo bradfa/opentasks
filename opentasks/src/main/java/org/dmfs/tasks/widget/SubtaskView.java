@@ -17,7 +17,6 @@
 package org.dmfs.tasks.widget;
 
 import android.content.Context;
-import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -37,7 +36,7 @@ import org.dmfs.tasks.contract.TaskContract;
 import org.dmfs.tasks.databinding.OpentasksViewItemTaskDetailsSubtaskBinding;
 import org.dmfs.tasks.utils.DateFormatter.DateFormatContext;
 import org.dmfs.tasks.utils.FormattedDate;
-import org.dmfs.tasks.utils.TaskUri;
+import org.dmfs.tasks.utils.SubtaskTaskDetailsUi;
 
 
 /**
@@ -58,16 +57,15 @@ public final class SubtaskView extends FrameLayout implements SmartView<RowDataS
     {
         OpentasksViewItemTaskDetailsSubtaskBinding views = DataBindingUtil.bind(this);
 
-        CharSequence title = new TaskTitle(subtaskData).value(getContext().getString(R.string.opentasks_task_details_subtask_untitled));
-        views.opentasksTaskDetailsSubtaskTitle.setText(title);
+        views.opentasksTaskDetailsSubtaskTitle.setText(
+                new TaskTitle(subtaskData).value(getContext().getString(R.string.opentasks_task_details_subtask_untitled)));
 
         views.getRoot().setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                Context context = v.getContext();
-                context.startActivity(new Intent("android.intent.action.VIEW", new TaskUri(context, subtaskData).value()));
+                new SubtaskTaskDetailsUi(subtaskData).show(v.getContext());
             }
         });
 
