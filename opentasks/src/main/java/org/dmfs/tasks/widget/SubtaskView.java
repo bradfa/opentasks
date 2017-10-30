@@ -34,10 +34,9 @@ import org.dmfs.optional.Optional;
 import org.dmfs.rfc5545.DateTime;
 import org.dmfs.tasks.R;
 import org.dmfs.tasks.contract.TaskContract;
-import org.dmfs.tasks.data.AndroidTime;
-import org.dmfs.tasks.data.AndroidTimeNow;
 import org.dmfs.tasks.databinding.OpentasksViewItemTaskDetailsSubtaskBinding;
-import org.dmfs.tasks.utils.DateFormatter;
+import org.dmfs.tasks.utils.DateFormatter.DateFormatContext;
+import org.dmfs.tasks.utils.FormattedDate;
 import org.dmfs.tasks.utils.TaskUri;
 
 
@@ -75,11 +74,8 @@ public final class SubtaskView extends FrameLayout implements SmartView<RowDataS
         Optional<DateTime> due = new DueTime(subtaskData).value();
         if (due.isPresent())
         {
-            String formattedDue = new DateFormatter(getContext()).format(
-                    new AndroidTime(due.value()).value(),
-                    new AndroidTimeNow().value(),
-                    DateFormatter.DateFormatContext.LIST_VIEW);
-            views.opentasksTaskDetailsSubtaskDue.setText(formattedDue);
+            views.opentasksTaskDetailsSubtaskDue.setText(
+                    new FormattedDate(getContext(), due.value(), DateFormatContext.LIST_VIEW).value());
         }
 
         views.opentasksTaskDetailsSubtaskListRibbon.setBackgroundColor(new TaskColor(subtaskData).value());
