@@ -34,7 +34,7 @@ import org.dmfs.tasks.contract.TaskContract;
 import org.dmfs.tasks.contract.TaskContract.Tasks;
 import org.dmfs.tasks.data.AndroidTime;
 import org.dmfs.tasks.data.AndroidTimeNow;
-import org.dmfs.tasks.databinding.OtViewTaskDetailSubtaskBinding;
+import org.dmfs.tasks.databinding.OpentasksViewItemTaskDetailSubtaskBinding;
 import org.dmfs.tasks.utils.DateFormatter;
 import org.dmfs.tasks.utils.DateFormatter.DateFormatContext;
 import org.dmfs.tasks.utils.TaskUri;
@@ -68,9 +68,9 @@ public final class SubtasksView implements SmartView<Iterable<RowDataSnapshot<Ta
 
         for (final RowDataSnapshot<Tasks> subtask : subtasks)
         {
-            OtViewTaskDetailSubtaskBinding views = DataBindingUtil.inflate(inflater, R.layout.ot_view_task_detail_subtask, null, false);
+            OpentasksViewItemTaskDetailSubtaskBinding views = DataBindingUtil.inflate(inflater, R.layout.opentasks_view_item_task_detail_subtask, null, false);
 
-            views.otTaskTitle.setText(new TaskTitle(subtask).value(context.getString(R.string.ot_task_details_subtask_untitled)));
+            views.opentasksTaskDetailsSubtaskTitle.setText(new TaskTitle(subtask).value(context.getString(R.string.opentasks_task_details_subtask_untitled)));
 
             views.getRoot().setOnClickListener(new View.OnClickListener()
             {
@@ -89,10 +89,11 @@ public final class SubtasksView implements SmartView<Iterable<RowDataSnapshot<Ta
                         new AndroidTime(due.value()).value(),
                         new AndroidTimeNow().value(),
                         DateFormatContext.LIST_VIEW);
-                views.otTaskDueDate.setText(formattedDue);
+                views.opentasksTaskDetailsSubtaskDue.setText(formattedDue);
             }
 
-            new ProgressBackgroundView(views.otPercentageBackground).update(new PercentComplete(subtask));
+            new ProgressBackgroundView(views.opentasksTaskDetailsSubtaskProgressBackground)
+                    .update(new PercentComplete(subtask));
 
             mHolder.addView(views.getRoot());
         }
