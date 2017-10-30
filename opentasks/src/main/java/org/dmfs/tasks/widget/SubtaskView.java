@@ -28,6 +28,7 @@ import android.widget.FrameLayout;
 import org.dmfs.android.contentpal.RowDataSnapshot;
 import org.dmfs.opentaskspal.readdata.DueTime;
 import org.dmfs.opentaskspal.readdata.PercentComplete;
+import org.dmfs.opentaskspal.readdata.TaskColor;
 import org.dmfs.opentaskspal.readdata.TaskTitle;
 import org.dmfs.optional.Optional;
 import org.dmfs.rfc5545.DateTime;
@@ -80,6 +81,8 @@ public final class SubtaskView extends FrameLayout implements SmartView<RowDataS
                     DateFormatter.DateFormatContext.LIST_VIEW);
             views.opentasksTaskDetailsSubtaskDue.setText(formattedDue);
         }
+
+        views.opentasksTaskDetailsSubtaskListRibbon.setBackgroundColor(new TaskColor(subtaskData).value());
 
         new ProgressBackgroundView(views.opentasksTaskDetailsSubtaskProgressBackground)
                 .update(new PercentComplete(subtaskData));
