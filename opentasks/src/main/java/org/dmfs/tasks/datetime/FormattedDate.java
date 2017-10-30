@@ -14,37 +14,39 @@
  * limitations under the License.
  */
 
-package org.dmfs.tasks.data;
+package org.dmfs.tasks.datetime;
 
-import android.text.format.Time;
+import android.content.Context;
 
 import org.dmfs.jems.single.Single;
 import org.dmfs.rfc5545.DateTime;
+import org.dmfs.tasks.utils.DateFormatter;
 
 
 /**
- * The deprecated {@link Time} class is 'legacy' in the project, this {@link Single} can adapt the replacement {@link DateTime} to it,
- * for places where {@link Time} is still needed in the transition period.
+ * {@link Single} for a formatted date {@link CharSequence}.
  *
  * @author Gabor Keszthelyi
  */
-public final class AndroidTime implements Single<Time>
+public final class FormattedDate implements Single<CharSequence>
 {
+    private final Context mContext;
     private final DateTime mDateTime;
+    private final DateFormatter.DateFormatContext mDateFormatContext;
 
 
-    public AndroidTime(DateTime dateTime)
+    public FormattedDate(Context context, DateTime dateTime, DateFormatter.DateFormatContext dateFormatContext)
     {
+        mContext = context;
         mDateTime = dateTime;
+        mDateFormatContext = dateFormatContext;
     }
 
 
     @Override
-    public Time value()
+    public CharSequence value()
     {
-        Time time = new Time();
-        time.set(mDateTime.getTimestamp());
-        // TODO all-day, timezone, etc
-        return time;
+        return new DateFormatter(mContext)
+                .format(new AndroidTime(mDateTime).value(), new AndroidTimeNow().value(), mDateFormatContext);
     }
 }

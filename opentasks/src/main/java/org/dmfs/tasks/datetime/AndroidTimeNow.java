@@ -14,25 +14,25 @@
  * limitations under the License.
  */
 
-package org.dmfs.opentaskspal.views;
+package org.dmfs.tasks.datetime;
 
-import android.content.ContentProviderClient;
+import android.text.format.Time;
 
-import org.dmfs.android.contentpal.View;
-import org.dmfs.android.contentpal.views.BaseView;
-import org.dmfs.android.contentpal.views.DelegatingView;
-import org.dmfs.tasks.contract.TaskContract;
+import org.dmfs.jems.single.Single;
 
 
 /**
- * {@link View} for the {@link TaskContract.Tasks} table.
+ * {@link Single} for creating a {@link Time} that represents the current time.
  *
  * @author Gabor Keszthelyi
  */
-public final class TasksView extends DelegatingView<TaskContract.Tasks>
+public final class AndroidTimeNow implements Single<Time>
 {
-    public TasksView(String authority, ContentProviderClient client, String... projection)
+    @Override
+    public Time value()
     {
-        super(new BaseView<TaskContract.Tasks>(client, TaskContract.Tasks.getContentUri(authority), projection));
+        Time now = new Time();
+        now.setToNow();
+        return now;
     }
 }

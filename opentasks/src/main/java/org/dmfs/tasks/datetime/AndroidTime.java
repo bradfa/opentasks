@@ -14,29 +14,38 @@
  * limitations under the License.
  */
 
-package org.dmfs.tasks.data;
+package org.dmfs.tasks.datetime;
 
 import android.text.format.Time;
 
 import org.dmfs.jems.single.Single;
+import org.dmfs.rfc5545.DateTime;
 
 
 /**
- * {@link Single} for creating a {@link Time} that represents the current time.
+ * The deprecated {@link Time} class is 'legacy' in the project, this {@link Single} can adapt the replacement {@link DateTime} to it,
+ * for places where {@link Time} is still needed in the transition period.
  *
  * @author Gabor Keszthelyi
  */
-public final class AndroidTimeNow implements Single<Time>
+public final class AndroidTime implements Single<Time>
 {
+    private final DateTime mDateTime;
+
+
+    public AndroidTime(DateTime dateTime)
+    {
+        mDateTime = dateTime;
+    }
+
+
     @Override
     public Time value()
     {
-        Time now = new Time();
-        now.setToNow();
-
-        // TODO What else? Do we need these?:
-        // now.clear(TimeZone.getDefault().getID()
-        // now.normalize(true)
-        return now;
+        Time time = new Time();
+        time.set(mDateTime.getTimestamp());
+        time.timezone = mDateTime.getTimeZone().getID();
+        time.allDay = mDateTime.isAllDay();
+        return time;
     }
 }

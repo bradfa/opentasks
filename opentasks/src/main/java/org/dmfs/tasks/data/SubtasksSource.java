@@ -22,6 +22,7 @@ import android.net.Uri;
 import org.dmfs.android.contentpal.RowDataSnapshot;
 import org.dmfs.tasks.contract.TaskContract;
 import org.dmfs.tasks.contract.TaskContract.Tasks;
+import org.dmfs.tasks.widget.SubtaskView;
 
 import io.reactivex.Single;
 import io.reactivex.SingleObserver;
@@ -45,9 +46,17 @@ public final class SubtasksSource extends Single<Iterable<RowDataSnapshot<TaskCo
     }
 
 
+    public SubtasksSource(Context appContext, Uri taskUri)
+    {
+        this(appContext, taskUri, SubtaskView.TASK_PROJECTION);
+    }
+
+
     @Override
     protected void subscribeActual(SingleObserver<? super Iterable<RowDataSnapshot<Tasks>>> observer)
     {
-        new Offloading<>(new CpQuerySource<>(mAppContext, new SubtasksCpQuery(mTaskUri, mProjection))).subscribe(observer);
+        new Offloading<>(
+                new CpQuerySource<>(mAppContext, new SubtasksCpQuery(mTaskUri, mProjection))
+        ).subscribe(observer);
     }
 }

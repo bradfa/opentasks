@@ -721,7 +721,7 @@ public class ViewTaskFragment extends SupportFragment
             }
         }
 
-        mDisposable = new SubtasksSource(mAppContext, mTaskUri, Tasks._ID, Tasks.TITLE)
+        mDisposable = new SubtasksSource(mAppContext, mTaskUri)
                 .subscribe(new Consumer<Iterable<RowDataSnapshot<TaskContract.Tasks>>>()
                 {
                     @Override

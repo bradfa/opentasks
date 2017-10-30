@@ -19,10 +19,13 @@ package org.dmfs.tasks.data;
 import android.content.ContentProviderClient;
 import android.os.Build;
 
+import io.reactivex.disposables.Disposable;
 import io.reactivex.disposables.Disposables;
 
 
 /**
+ * {@link Disposable} for {@link ContentProviderClient}.
+ *
  * @author Gabor Keszthelyi
  */
 public final class ContentProviderClientDisposable extends DelegatingDisposable

@@ -32,10 +32,10 @@ import org.dmfs.opentaskspal.readdata.TaskTitle;
 import org.dmfs.optional.Optional;
 import org.dmfs.rfc5545.DateTime;
 import org.dmfs.tasks.R;
-import org.dmfs.tasks.contract.TaskContract;
+import org.dmfs.tasks.contract.TaskContract.Tasks;
 import org.dmfs.tasks.databinding.OpentasksViewItemTaskDetailsSubtaskBinding;
+import org.dmfs.tasks.datetime.FormattedDate;
 import org.dmfs.tasks.utils.DateFormatter.DateFormatContext;
-import org.dmfs.tasks.utils.FormattedDate;
 import org.dmfs.tasks.utils.SubtaskTaskDetailsUi;
 
 
@@ -44,8 +44,21 @@ import org.dmfs.tasks.utils.SubtaskTaskDetailsUi;
  *
  * @author Gabor Keszthelyi
  */
-public final class SubtaskView extends FrameLayout implements SmartView<RowDataSnapshot<TaskContract.Tasks>>
+public final class SubtaskView extends FrameLayout implements SmartView<RowDataSnapshot<Tasks>>
 {
+
+    /**
+     * The projection required to be able to display this view.
+     */
+    public static final String[] TASK_PROJECTION = new String[] {
+            Tasks._ID,
+            Tasks.TITLE,
+            Tasks.TASK_COLOR,
+            Tasks.LIST_COLOR,
+            Tasks.DUE
+    };
+
+
     public SubtaskView(@NonNull Context context, @Nullable AttributeSet attrs)
     {
         super(context, attrs);
@@ -53,7 +66,7 @@ public final class SubtaskView extends FrameLayout implements SmartView<RowDataS
 
 
     @Override
-    public void update(final RowDataSnapshot<TaskContract.Tasks> subtaskData)
+    public void update(final RowDataSnapshot<Tasks> subtaskData)
     {
         OpentasksViewItemTaskDetailsSubtaskBinding views = DataBindingUtil.bind(this);
 
