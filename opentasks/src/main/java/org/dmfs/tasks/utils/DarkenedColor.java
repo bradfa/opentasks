@@ -26,6 +26,7 @@ import org.dmfs.jems.single.Single;
  *
  * @author Gabor Keszthelyi
  */
+// TODO Use Color type from Bolts library when available
 public final class DarkenedColor implements Single<Integer>
 {
     private final int mOriginalColor;

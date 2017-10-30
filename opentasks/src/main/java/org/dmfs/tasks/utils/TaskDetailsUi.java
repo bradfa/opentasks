@@ -20,7 +20,7 @@ import android.content.Context;
 
 
 /**
- * Represents task details UI which can be shown.
+ * Represents the task details UI which can be shown.
  *
  * @author Gabor Keszthelyi
  */

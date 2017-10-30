@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 
-package org.dmfs.tasks.utils;
+package org.dmfs.tasks.data;
 
 import android.content.ContentUris;
 import android.content.Context;
 import android.net.Uri;
 
 import org.dmfs.android.contentpal.RowDataSnapshot;
-import org.dmfs.android.contentpal.RowSnapshot;
 import org.dmfs.jems.single.Single;
 import org.dmfs.opentaskspal.readdata.Id;
 import org.dmfs.provider.tasks.AuthorityUtil;
@@ -29,6 +28,8 @@ import org.dmfs.tasks.contract.TaskContract.Tasks;
 
 
 /**
+ * {@link Single} for the content {@link Uri} that refers to the given {@link RowDataSnapshot}.
+ *
  * @author Gabor Keszthelyi
  */
 public final class TaskUri implements Single<Uri>
@@ -41,12 +42,6 @@ public final class TaskUri implements Single<Uri>
     {
         mContext = context;
         mRowDataSnapshot = rowDataSnapshot;
-    }
-
-
-    public TaskUri(Context context, RowSnapshot<Tasks> rowSnapshot)
-    {
-        this(context, rowSnapshot.values());
     }
 
 

@@ -20,6 +20,7 @@ import android.content.Context;
 
 import org.dmfs.android.contentpal.RowDataSnapshot;
 import org.dmfs.tasks.contract.TaskContract;
+import org.dmfs.tasks.data.TaskUri;
 
 
 /**
