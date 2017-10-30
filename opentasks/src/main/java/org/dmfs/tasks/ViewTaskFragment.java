@@ -56,6 +56,8 @@ import org.dmfs.android.contentpal.RowDataSnapshot;
 import org.dmfs.android.retentionmagic.SupportFragment;
 import org.dmfs.android.retentionmagic.annotations.Parameter;
 import org.dmfs.android.retentionmagic.annotations.Retain;
+import org.dmfs.iterables.decorators.Mapped;
+import org.dmfs.iterators.Function;
 import org.dmfs.tasks.contract.TaskContract;
 import org.dmfs.tasks.contract.TaskContract.Tasks;
 import org.dmfs.tasks.data.SubtasksSource;
@@ -68,7 +70,9 @@ import org.dmfs.tasks.notification.TaskNotificationHandler;
 import org.dmfs.tasks.share.ShareIntentFactory;
 import org.dmfs.tasks.utils.ContentValueMapper;
 import org.dmfs.tasks.utils.OnModelLoadedListener;
-import org.dmfs.tasks.widget.SubtasksView;
+import org.dmfs.tasks.widget.ListItem;
+import org.dmfs.tasks.widget.Populateable;
+import org.dmfs.tasks.widget.SubtaskListItem;
 import org.dmfs.tasks.widget.TaskView;
 
 import java.util.Arrays;
@@ -726,7 +730,17 @@ public class ViewTaskFragment extends SupportFragment
                     @Override
                     public void accept(Iterable<RowDataSnapshot<TaskContract.Tasks>> subTasks)
                     {
-                        new SubtasksView(mContent).update(subTasks);
+                        new Populateable(mContent).update(
+                                new Mapped<>(subTasks, new Function<RowDataSnapshot<Tasks>, ListItem>()
+                                {
+                                    @Override
+                                    public ListItem apply(RowDataSnapshot<Tasks> subtaskData)
+                                    {
+                                        return new SubtaskListItem(subtaskData);
+                                    }
+                                })
+                        );
+                        mContent.requestLayout();
                     }
                 });
     }
