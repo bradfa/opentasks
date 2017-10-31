@@ -18,8 +18,7 @@ package org.dmfs.opentaskspal.readdata;
 
 import org.dmfs.android.contentpal.RowDataSnapshot;
 import org.dmfs.iterators.Function;
-import org.dmfs.jems.single.Single;
-import org.dmfs.optional.Optional;
+import org.dmfs.optional.decorators.DelegatingOptional;
 import org.dmfs.optional.decorators.Mapped;
 import org.dmfs.rfc5545.DateTime;
 import org.dmfs.tasks.contract.TaskContract;
@@ -28,28 +27,20 @@ import org.dmfs.tasks.contract.TaskContract;
 /**
  * @author Gabor Keszthelyi
  */
-public final class DueTime implements Single<Optional<DateTime>>
+public final class DueTime extends DelegatingOptional<DateTime>
 {
-    private final RowDataSnapshot<TaskContract.Tasks> mRowDataSnapshot;
-
 
     public DueTime(RowDataSnapshot<TaskContract.Tasks> rowDataSnapshot)
     {
-        mRowDataSnapshot = rowDataSnapshot;
-    }
-
-
-    @Override
-    public Optional<DateTime> value()
-    {
-        return new Mapped<>(new Function<CharSequence, DateTime>()
+        super(new Mapped<>(new Function<CharSequence, DateTime>()
         {
             @Override
             public DateTime apply(CharSequence dueCharSequence)
             {
-                // TODO Review this conversion, create Single for it
+                // TODO Review this conversion, its place is probably elsewhere ( maybe use existing String -> Time -> DateTime)
                 return new DateTime(Long.valueOf(dueCharSequence.toString()));
             }
-        }, mRowDataSnapshot.charData(TaskContract.Tasks.DUE));
+        }, rowDataSnapshot.charData(TaskContract.Tasks.DUE)));
     }
+
 }

@@ -82,7 +82,7 @@ public final class SubtaskView extends FrameLayout implements SmartView<RowDataS
             }
         });
 
-        Optional<DateTime> due = new DueTime(subtaskData).value();
+        Optional<DateTime> due = new DueTime(subtaskData);
         if (due.isPresent())
         {
             views.opentasksTaskDetailsSubtaskDue.setText(
