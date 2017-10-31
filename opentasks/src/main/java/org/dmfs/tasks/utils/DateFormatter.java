@@ -20,6 +20,7 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
+import android.support.annotation.VisibleForTesting;
 import android.text.format.DateUtils;
 import android.text.format.Time;
 
@@ -340,8 +341,12 @@ public class DateFormatter
     }
 
 
-    // TODO Review and perhaps test this. Does it work correctly in all cases, with DateTime.now() or nowAndHere() as well?
-    private Time toTime(DateTime dateTime)
+    /**
+     * {@link Time} will eventually be replaced with {@link DateTime} in the project.
+     * This conversion function is only needed in the transition period.
+     */
+    @VisibleForTesting
+    Time toTime(DateTime dateTime)
     {
         Time time = new Time();
         time.set(dateTime.getTimestamp());

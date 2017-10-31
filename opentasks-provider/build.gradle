@@ -35,7 +35,7 @@ dependencies {
     androidTestCompile project(':opentaskspal')
     androidTestCompile 'com.github.dmfs.contentpal:contenttestpal:' + CONTENTPAL_VERSION
     androidTestCompile 'com.android.support:support-annotations:' + SUPPORT_LIBRARY_VERSION
-    androidTestCompile 'com.android.support.test:runner:0.5'
-    androidTestCompile 'com.android.support.test:rules:0.5'
+    androidTestCompile 'com.android.support.test:runner:' + ANDROID_TEST_RUNNER_VERSION
+    androidTestCompile 'com.android.support.test:rules:' + ANDROID_TEST_RUNNER_VERSION
     androidTestCompile 'org.hamcrest:hamcrest-library:1.3'
 }
