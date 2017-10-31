@@ -23,6 +23,7 @@ import android.os.Build;
 import android.text.format.DateUtils;
 import android.text.format.Time;
 
+import org.dmfs.rfc5545.DateTime;
 import org.dmfs.tasks.R;
 
 import java.text.DateFormat;
@@ -199,9 +200,9 @@ public class DateFormatter
 
 
     /**
-     * The formatter we use for due dates other than today.
+     * The format we use for due dates other than today.
      */
-    private final DateFormat mDateFormatter = DateFormat.getDateInstance(SimpleDateFormat.MEDIUM);
+    private final DateFormat mDateFormat = DateFormat.getDateInstance(SimpleDateFormat.MEDIUM);
 
     /**
      * A context to load resource string.
@@ -237,6 +238,17 @@ public class DateFormatter
         mNow.clear(TimeZone.getDefault().getID());
         mNow.setToNow();
         return format(date, mNow, dateContext);
+    }
+
+
+    /**
+     * Same as {@link #format(Time, DateFormatContext)} just with {@link DateTime}s.
+     * ({@link Time} will eventually be replaced with {@link DateTime} in the project)
+     */
+    @TargetApi(Build.VERSION_CODES.GINGERBREAD)
+    public String format(DateTime date, DateFormatContext dateContext)
+    {
+        return format(toTime(date), dateContext);
     }
 
 
@@ -294,6 +306,17 @@ public class DateFormatter
     }
 
 
+    /**
+     * Same as {@link #format(Time, Time, DateFormatContext)} just with {@link DateTime}s.
+     * ({@link Time} will eventually be replaced with {@link DateTime} in the project)
+     */
+    @TargetApi(Build.VERSION_CODES.GINGERBREAD)
+    public String format(DateTime date, DateTime now, DateFormatContext dateContext)
+    {
+        return format(toTime(date), toTime(now), dateContext);
+    }
+
+
     @SuppressLint("NewApi")
     private String formatAllDay(Time date, Time now, DateFormatContext dateContext)
     {
@@ -305,8 +328,8 @@ public class DateFormatter
         }
         else
         {
-            mDateFormatter.setTimeZone(TimeZone.getTimeZone("UTC"));
-            return mDateFormatter.format(new Date(date.toMillis(false)));
+            mDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+            return mDateFormat.format(new Date(date.toMillis(false)));
         }
     }
 
@@ -314,5 +337,16 @@ public class DateFormatter
     private String formatNonAllDay(Time date, Time now, DateFormatContext dateContext)
     {
         return DateUtils.formatDateTime(mContext, date.toMillis(false), dateContext.getDateUtilsFlags(now, date));
+    }
+
+
+    // TODO Review and perhaps test this. Does it work correctly in all cases, with DateTime.now() or nowAndHere() as well?
+    private Time toTime(DateTime dateTime)
+    {
+        Time time = new Time();
+        time.set(dateTime.getTimestamp());
+        time.timezone = dateTime.getTimeZone().getID();
+        time.allDay = dateTime.isAllDay();
+        return time;
     }
 }

@@ -34,7 +34,7 @@ import org.dmfs.rfc5545.DateTime;
 import org.dmfs.tasks.R;
 import org.dmfs.tasks.contract.TaskContract.Tasks;
 import org.dmfs.tasks.databinding.OpentasksViewItemTaskDetailsSubtaskBinding;
-import org.dmfs.tasks.datetime.FormattedDate;
+import org.dmfs.tasks.utils.DateFormatter;
 import org.dmfs.tasks.utils.DateFormatter.DateFormatContext;
 import org.dmfs.tasks.utils.SubtaskTaskDetailsUi;
 
@@ -86,7 +86,7 @@ public final class SubtaskView extends FrameLayout implements SmartView<RowDataS
         if (due.isPresent())
         {
             views.opentasksTaskDetailsSubtaskDue.setText(
-                    new FormattedDate(getContext(), due.value(), DateFormatContext.LIST_VIEW).value());
+                    new DateFormatter(getContext()).format(due.value(), DateTime.now(), DateFormatContext.LIST_VIEW));
         }
 
         views.opentasksTaskDetailsSubtaskListRibbon.setBackgroundColor(new TaskColor(subtaskData).value());
