@@ -16,20 +16,18 @@
 
 package org.dmfs.tasks.widget;
 
-import org.dmfs.android.contentpal.RowDataSnapshot;
-import org.dmfs.tasks.R;
-import org.dmfs.tasks.contract.TaskContract;
+import android.view.View;
 
 
 /**
- * {@link ListItem} for {@link SubtaskView}.
+ * Represents a View that can be populated with other Views, i.e. views can be added to it.
  *
  * @author Gabor Keszthelyi
  */
-public final class SubtaskListItem extends DelegatingListItem<SubtaskView>
+public interface PopulateableView<V extends View>
 {
-    public SubtaskListItem(RowDataSnapshot<TaskContract.Tasks> subtaskData)
-    {
-        super(new SmartListItem<SubtaskView, RowDataSnapshot<TaskContract.Tasks>>(R.layout.opentasks_view_item_task_details_subtask, subtaskData));
-    }
+    /**
+     * Adds the given views to this view.
+     */
+    void populate(Iterable<V> views);
 }

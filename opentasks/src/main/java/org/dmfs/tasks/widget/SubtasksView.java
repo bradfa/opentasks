@@ -16,13 +16,10 @@
 
 package org.dmfs.tasks.widget;
 
+import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import org.dmfs.android.contentpal.RowDataSnapshot;
-import org.dmfs.iterables.ArrayIterable;
-import org.dmfs.iterables.decorators.Flattened;
-import org.dmfs.iterables.decorators.Mapped;
-import org.dmfs.iterators.Function;
 import org.dmfs.tasks.R;
 import org.dmfs.tasks.contract.TaskContract.Tasks;
 
@@ -46,24 +43,13 @@ public final class SubtasksView implements SmartView<Iterable<RowDataSnapshot<Ta
     @Override
     public void update(Iterable<RowDataSnapshot<Tasks>> subtasks)
     {
-        new Populateable(mContentView).update(
+        LayoutInflater inflater = LayoutInflater.from(mContentView.getContext());
 
-                new Flattened<>(
+        inflater.inflate(R.layout.opentasks_view_item_divider, mContentView);
+        inflater.inflate(R.layout.opentasks_view_item_task_details_subtitles_section_header, mContentView);
 
-                        new ArrayIterable<ListItem>(
-                                new StaticListItem(R.layout.opentasks_view_item_divider),
-                                new StaticListItem(R.layout.opentasks_view_item_task_details_subtitles_section_header)
-                        ),
-
-                        new Mapped<>(subtasks, new Function<RowDataSnapshot<Tasks>, ListItem>()
-                        {
-                            @Override
-                            public ListItem apply(RowDataSnapshot<Tasks> subtaskData)
-                            {
-                                return new SubtaskListItem(subtaskData);
-                            }
-                        })
-                )
-        );
+        new PopulateableViewGroup<SubtaskView>(mContentView)
+                .populate(new UpdatedSmartViews<RowDataSnapshot<Tasks>, SubtaskView>(
+                        subtasks, inflater, R.layout.opentasks_view_item_task_details_subtask));
     }
 }

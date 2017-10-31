@@ -17,34 +17,31 @@
 package org.dmfs.tasks.widget;
 
 import android.view.View;
+import android.view.ViewGroup;
 
 
 /**
- * {@link ListItem} base class that delegates to another {@link ListItem}.
+ * {@link PopulateableView} that simply adds the views to the provided {@link ViewGroup} as child views.
  *
  * @author Gabor Keszthelyi
  */
-public abstract class DelegatingListItem<V extends View> implements ListItem<V>
+public final class PopulateableViewGroup<V extends View> implements PopulateableView<V>
 {
-    private final ListItem<V> mDelegate;
+    private final ViewGroup mViewGroup;
 
 
-    public DelegatingListItem(ListItem<V> delegate)
+    public PopulateableViewGroup(ViewGroup viewGroup)
     {
-        mDelegate = delegate;
+        mViewGroup = viewGroup;
     }
 
 
     @Override
-    public final int layout()
+    public void populate(Iterable<V> views)
     {
-        return mDelegate.layout();
-    }
-
-
-    @Override
-    public final void bindDataTo(V view)
-    {
-        mDelegate.bindDataTo(view);
+        for (V view : views)
+        {
+            mViewGroup.addView(view);
+        }
     }
 }
