@@ -731,7 +731,7 @@ public class ViewTaskFragment extends SupportFragment
                         {
                             new SubtasksView(mContent).update(subTasks);
                             ((TextView) mContent.findViewById(R.id.opentasks_view_item_task_details_subtitles_section_header))
-                                    .setTextColor(new DarkenedColor(mListColor).value());
+                                    .setTextColor(new DarkenedColor(mListColor).argb());
                             mContent.requestLayout();
                         }
                     }
