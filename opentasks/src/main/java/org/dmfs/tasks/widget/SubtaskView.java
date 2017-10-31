@@ -89,7 +89,7 @@ public final class SubtaskView extends FrameLayout implements SmartView<RowDataS
                     new DateFormatter(getContext()).format(due.value(), DateTime.now(), DateFormatContext.LIST_VIEW));
         }
 
-        views.opentasksTaskDetailsSubtaskListRibbon.setBackgroundColor(new TaskColor(subtaskData).value());
+        views.opentasksTaskDetailsSubtaskListRibbon.setBackgroundColor(new TaskColor(subtaskData).argb());
 
         new ProgressBackgroundView(views.opentasksTaskDetailsSubtaskProgressBackground)
                 .update(new PercentComplete(subtaskData));

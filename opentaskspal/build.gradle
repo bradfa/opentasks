@@ -18,6 +18,8 @@ dependencies {
     compile project(':opentasks-contract')
     compile 'com.github.dmfs.contentpal:contentpal:' + CONTENTPAL_VERSION
     compile "org.dmfs:rfc5545-datetime:0.2.4"
+    compile 'com.github.dmfs.bolts:color-bolts:' + BOLTS_VERSION
+
     testCompile 'com.github.dmfs.contentpal:contentpal-testing:' + CONTENTPAL_VERSION
     testCompile 'org.robolectric:robolectric:' + ROBOLECTRIC_VERSION
     testCompile 'junit:junit:4.12'

@@ -16,17 +16,18 @@
 
 package org.dmfs.opentaskspal.readdata;
 
+import org.dmfs.android.bolts.color.Color;
 import org.dmfs.android.contentpal.RowDataSnapshot;
-import org.dmfs.jems.single.Single;
 import org.dmfs.tasks.contract.TaskContract;
 
 
 /**
+ * {@link Color} for a task. Uses {@link TaskContract.Tasks#TASK_COLOR} if available,
+ * fall backs to the mandatory {@link TaskContract.Tasks#LIST_COLOR} if not.
+ *
  * @author Gabor Keszthelyi
  */
-// TODO Is it optional?
-// TODO Use Color from Bolts lib
-public final class TaskColor implements Single<Integer>
+public final class TaskColor implements Color
 {
     private final RowDataSnapshot<TaskContract.Tasks> mRowDataSnapshot;
 
@@ -38,10 +39,11 @@ public final class TaskColor implements Single<Integer>
 
 
     @Override
-    public Integer value()
+    public int argb()
     {
-        // TODO Is it correct?
-        return Integer.valueOf(mRowDataSnapshot.charData(TaskContract.Tasks.TASK_COLOR)
-                .value(mRowDataSnapshot.charData(TaskContract.Tasks.LIST_COLOR).value()).toString());
+        CharSequence colorCs = mRowDataSnapshot.charData(TaskContract.Tasks.TASK_COLOR)
+                .value(mRowDataSnapshot.charData(TaskContract.Tasks.LIST_COLOR).value());
+
+        return Integer.valueOf(colorCs.toString());
     }
 }
