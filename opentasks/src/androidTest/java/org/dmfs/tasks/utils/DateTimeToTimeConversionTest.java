@@ -37,10 +37,8 @@ public class DateTimeToTimeConversionTest
 {
 
     @Test
-    public void testVariousDateTimes()
+    public void test_toTime_withVariousDateTimes()
     {
-        // TODO Fails, fix conversion or equivalence definition
-
         assertCorrectlyConverted(DateTime.now());
 
         assertCorrectlyConverted(DateTime.now(TimeZone.getTimeZone("UTC+04:00")));
@@ -53,13 +51,25 @@ public class DateTimeToTimeConversionTest
 
         assertCorrectlyConverted(DateTime.now(TimeZone.getTimeZone("UTC+04:00")).shiftTimeZone(TimeZone.getTimeZone("UTC+05:00")));
 
+        // Floating, all-day
         assertCorrectlyConverted(DateTime.now().toAllDay());
 
-        // DST:
-        assertCorrectlyConverted(new DateTime(2017, 7 - 1, 7, 15, 0, 0).swapTimeZone(TimeZone.getTimeZone("Europe/Budapest")));
-
-        // Not DST:
+        // Not DST (March 2017 in Hungary):
+        assertCorrectlyConverted(new DateTime(TimeZone.getTimeZone("Europe/Budapest"), 2017, 2 - 1, 7, 15, 0, 0));
+        assertCorrectlyConverted(new DateTime(2017, 2 - 1, 7, 15, 0, 0).shiftTimeZone(TimeZone.getTimeZone("Europe/Budapest")));
         assertCorrectlyConverted(new DateTime(2017, 2 - 1, 7, 15, 0, 0).swapTimeZone(TimeZone.getTimeZone("Europe/Budapest")));
+
+        // DST (July 2017 in Hungary):
+        assertCorrectlyConverted(new DateTime(TimeZone.getTimeZone("Europe/Budapest"), 2017, 7 - 1, 7, 15, 0, 0));
+        assertCorrectlyConverted(new DateTime(2017, 7 - 1, 7, 15, 0, 0).shiftTimeZone(TimeZone.getTimeZone("Europe/Budapest")));
+        assertCorrectlyConverted(new DateTime(2017, 7 - 1, 7, 15, 0, 0).swapTimeZone(TimeZone.getTimeZone("Europe/Budapest")));
+    }
+
+
+    @Test(expected = IllegalArgumentException.class)
+    public void test_toTime_forFloatingButNotAllDayDateTime_throwsSinceItIsNotSupported()
+    {
+        new DateFormatter(null).toTime(new DateTime(2017, 7 - 1, 7, 15, 0, 0));
     }
 
 
@@ -78,9 +88,25 @@ public class DateTimeToTimeConversionTest
      */
     private boolean isEquivalentDateTimeAndTime(DateTime dateTime, Time time)
     {
-        return time.toMillis(true) == dateTime.getTimestamp() &&
-                time.allDay == dateTime.isAllDay() &&
-                time.timezone.equals(dateTime.getTimeZone().getID());
+        // Time doesn't seem to store in millis precision, there is a 1000 multiplier  internally when calculating millis,
+        // so we can only compare to this precision:
+        boolean millisMatch =
+                dateTime.getTimestamp() / 1000
+                        ==
+                        time.toMillis(false) / 1000;
+
+        boolean allDaysMatch = time.allDay == dateTime.isAllDay();
+
+        boolean timeZoneMatch =
+                // If DateTime is floating, all-day then if the all-day flag is matched with Time (checked earlier)
+                // then we consider the Time's timezone matching, we ignore that basically,
+                // because Time always has a time zone, and there is no other way to represent all-day date-times with Time.
+                (dateTime.isFloating() && dateTime.isAllDay())
+                        ||
+                        // This is the regular case with non-floating DateTime
+                        (dateTime.getTimeZone() != null && time.timezone.equals(dateTime.getTimeZone().getID()));
+
+        return millisMatch && allDaysMatch && timeZoneMatch;
     }
 
 }

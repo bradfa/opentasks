@@ -348,10 +348,26 @@ public class DateFormatter
     @VisibleForTesting
     Time toTime(DateTime dateTime)
     {
-        Time time = new Time();
+        if (dateTime.isFloating() && !dateTime.isAllDay())
+        {
+            throw new IllegalArgumentException("Cannot support floating DateTime that is not all-day, can't represent it with Time");
+        }
+
+        // Time always needs a TimeZone (default ctor falls back to TimeZone.getDefault())
+        String timeZoneId = dateTime.getTimeZone() == null ? TimeZone.getDefault().getID() : dateTime.getTimeZone().getID();
+        Time time = new Time(timeZoneId);
+
         time.set(dateTime.getTimestamp());
-        time.timezone = dateTime.getTimeZone().getID();
-        time.allDay = dateTime.isAllDay();
+
+        // TODO Would using time.set(monthDay, month, year) be better?
+        if (dateTime.isAllDay())
+        {
+            time.allDay = true;
+            // This is needed as per time.allDay docs:
+            time.hour = 0;
+            time.minute = 0;
+            time.second = 0;
+        }
         return time;
     }
 }
