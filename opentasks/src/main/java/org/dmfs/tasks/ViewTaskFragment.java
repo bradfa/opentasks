@@ -67,7 +67,7 @@ import org.dmfs.tasks.model.TaskFieldAdapters;
 import org.dmfs.tasks.notification.TaskNotificationHandler;
 import org.dmfs.tasks.share.ShareIntentFactory;
 import org.dmfs.tasks.utils.ContentValueMapper;
-import org.dmfs.tasks.utils.DarkenedColor;
+import org.dmfs.tasks.utils.Darkened;
 import org.dmfs.tasks.utils.OnModelLoadedListener;
 import org.dmfs.tasks.widget.SubtasksView;
 import org.dmfs.tasks.widget.TaskView;
@@ -731,7 +731,7 @@ public class ViewTaskFragment extends SupportFragment
                         {
                             new SubtasksView(mContent).update(subTasks);
                             ((TextView) mContent.findViewById(R.id.opentasks_view_item_task_details_subtitles_section_header))
-                                    .setTextColor(new DarkenedColor(mListColor).argb());
+                                    .setTextColor(new Darkened(mListColor).argb());
                             mContent.requestLayout();
                         }
                     }

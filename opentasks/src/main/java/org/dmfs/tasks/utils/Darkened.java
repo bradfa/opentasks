@@ -16,30 +16,32 @@
 
 package org.dmfs.tasks.utils;
 
+import android.support.annotation.ColorInt;
+
 import org.dmfs.android.bolts.color.Color;
+import org.dmfs.android.bolts.color.colors.ValueColor;
 
 
 /**
- * {@link Color} to get a darkened version of an original color dynamically.
- * (Typically to then use as status bar color.)
+ * {@link Color} decorator that darkens the color dynamically.
+ * (Typically to use for status bar color.)
  *
  * @author Gabor Keszthelyi
  */
-public final class DarkenedColor implements Color
+public final class Darkened implements Color
 {
-    private final int mOriginalColorInt;
+    private final Color mOriginal;
 
 
-    public DarkenedColor(int originalColorInt)
+    public Darkened(Color original)
     {
-        mOriginalColorInt = originalColorInt;
+        mOriginal = original;
     }
 
 
-    // TODO Have Color as the primary field and use ValueColor to wrap the int (after https://github.com/dmfs/Bolts/issues/5)
-    public DarkenedColor(Color originalColor)
+    public Darkened(@ColorInt int originalColorInt)
     {
-        this(originalColor.argb());
+        this(new ValueColor(originalColorInt));
     }
 
 
@@ -47,7 +49,7 @@ public final class DarkenedColor implements Color
     public int argb()
     {
         float[] hsv = new float[3];
-        android.graphics.Color.colorToHSV(mOriginalColorInt, hsv);
+        android.graphics.Color.colorToHSV(mOriginal.argb(), hsv);
         hsv[2] = hsv[2] * 0.75f;
         return android.graphics.Color.HSVToColor(hsv);
     }

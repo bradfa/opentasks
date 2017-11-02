@@ -29,7 +29,7 @@ import android.view.WindowManager;
 
 import org.dmfs.tasks.model.ContentSet;
 import org.dmfs.tasks.utils.BaseActivity;
-import org.dmfs.tasks.utils.DarkenedColor;
+import org.dmfs.tasks.utils.Darkened;
 
 
 /**
@@ -141,7 +141,7 @@ public class ViewTaskActivity extends BaseActivity implements ViewTaskFragment.C
         {
             Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(new DarkenedColor(color).argb());
+            window.setStatusBarColor(new Darkened(color).argb());
         }
     }
 
