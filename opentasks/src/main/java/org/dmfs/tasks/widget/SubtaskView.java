@@ -50,12 +50,15 @@ public final class SubtaskView extends FrameLayout implements SmartView<RowDataS
     /**
      * The projection required to be able to display this view.
      */
-    public static final String[] TASK_PROJECTION = new String[] {
+    public static final String[] TASKS_PROJECTION = new String[] {
             Tasks._ID,
             Tasks.TITLE,
             Tasks.TASK_COLOR,
             Tasks.LIST_COLOR,
-            Tasks.DUE
+            Tasks.DUE,
+            Tasks.TZ,
+            Tasks.IS_ALLDAY,
+            Tasks.PERCENT_COMPLETE
     };
 
 

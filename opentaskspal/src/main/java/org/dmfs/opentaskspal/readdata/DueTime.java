@@ -37,7 +37,7 @@ public final class DueTime extends DelegatingOptional<DateTime>
             @Override
             public DateTime apply(CharSequence dueCharSequence)
             {
-                // TODO Review this conversion, its place is probably elsewhere ( maybe use existing String -> Time -> DateTime)
+                // TODO Review this conversion, its place may be elsewhere. Has to use timezone and all-day information, too.
                 return new DateTime(Long.valueOf(dueCharSequence.toString()));
             }
         }, rowDataSnapshot.charData(TaskContract.Tasks.DUE)));

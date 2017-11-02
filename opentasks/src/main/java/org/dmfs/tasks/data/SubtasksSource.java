@@ -50,7 +50,7 @@ public final class SubtasksSource extends Single<Iterable<RowDataSnapshot<TaskCo
 
     public SubtasksSource(Context appContext, Uri taskUri)
     {
-        this(appContext, taskUri, SubtaskView.TASK_PROJECTION);
+        this(appContext, taskUri, SubtaskView.TASKS_PROJECTION);
     }
 
 
